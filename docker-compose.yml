@@ -1,7 +1,30 @@
 version: "2"
 
+version: '2.4'
+volumes:
+  ignition:
+    ignition-data: {} 
+   db:
+    driver: local
 services:
-  balena-hello-world:
-    build: .
+  ignition:
+    image: 'inductiveautomation/ignition:latest'
     ports:
-      - "80:80"
+      - '9088:8088'
+      - '8043:8043'
+      - '8060:8060'
+    cap_add:
+      - SYS_RAWIO
+    volumes:
+      - 'ignition-data:/var/lib/ignition/data'
+    privileged: true
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
