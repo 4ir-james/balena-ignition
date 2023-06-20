@@ -28,3 +28,16 @@ services:
       - '5432:5432'
     volumes: 
       - db:/var/lib/postgresql/data
+services:
+  db:
+    image: postgres:latest
+    container_name: my-postgres-db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: your_database_name
+    volumes:
+      - ./data:/var/lib/postgresql/data
